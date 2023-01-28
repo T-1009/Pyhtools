@@ -16,6 +16,7 @@ QQ邮箱及其授权码，效果更加（防止单一QQ邮箱发送邮件被放�
 ![image](https://user-images.githubusercontent.com/102849988/215248094-53be6daf-6675-4570-9d81-8d5154e31e4c.png)
 ### 4. SmS Bomb
 输入4，填写要轰炸的手机号。smsBomb.py源文件中只实现一次轰炸，可以添加多线程，在api.json中增加api接口效果更加！
+
 ![image](https://user-images.githubusercontent.com/102849988/215248252-505efad1-83b8-401d-92d4-805c13bb9de5.png)
 
 ## Bug and Improvement
