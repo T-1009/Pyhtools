@@ -1,5 +1,5 @@
 # Pyhtools
-  基于python-nmap, scapy, socket等库实现的可对目标主机进行dos, arp断网攻击，短信轰炸，邮箱轰炸。
+  基于python-nmap, scapy, socket等库实现的可对目标主机进行dos攻击, 局域网内arp断网攻击，短信轰炸，邮箱轰炸。
 ![image](https://user-images.githubusercontent.com/102849988/215247341-69c5970f-c1cb-4c33-8496-a6d47d0c078a.png)
 
 ## Usage
