@@ -1,6 +1,15 @@
 # Pyhtools
   基于python-nmap, scapy, socket等库实现的可对目标主机进行dos攻击, 局域网内arp断网攻击，短信轰炸，邮箱轰炸。
+  
+  开发环境为vscode，在pycharm下运行代码打开json文件的相对路径可能会报错，改为pycharm下文件相对路径写法即可正常使用！
 ![image](https://user-images.githubusercontent.com/102849988/215247341-69c5970f-c1cb-4c33-8496-a6d47d0c078a.png)
+
+## Install
+### 1. Windows下安装nmap（如果不使用arp断网攻击，不需要安装nmap）
+### 2. python相关库安装
+```python
+pip install -r requirements.txt
+```
 
 ## Usage
 ### 1. ArpAttack
@@ -20,11 +29,11 @@ QQ邮箱及其授权码，效果更加（防止单一QQ邮箱发送邮件被放�
 ![image](https://user-images.githubusercontent.com/102849988/215248252-505efad1-83b8-401d-92d4-805c13bb9de5.png)
 
 ## Bug and Improvement
-1. Bug: DoS模块中Python的Thread线程该如何停止（通过Ctrl+C停止）？
-2. Bug: 垃圾短信轰炸只是通过简单的request请求是否响应来判断该次发送短信是否成功。大部分api失效。
-3. Improvement: 邮箱轰炸增加QQ邮箱及其授权码。
-4. Improvement: 垃圾短信轰炸增加多线程及其api接口。
-5. Improvement: 更多的攻击手段添加。
+### 1. Bug: DoS模块中Python的Thread线程该如何停止（通过Ctrl+C停止）？
+### 2. Bug: 垃圾短信轰炸只是通过简单的request请求是否响应来判断该次发送短信是否成功。大部分api失效。
+### 3. Improvement: 邮箱轰炸增加QQ邮箱及其授权码。
+### 4. Improvement: 垃圾短信轰炸增加多线程及其api接口。
+### 5. Improvement: 更多的攻击手段添加。
 
 
 
